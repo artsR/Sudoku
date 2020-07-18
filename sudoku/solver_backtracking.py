@@ -103,7 +103,6 @@ class Sudoku:
                     return (coord_r, coord_c)
         return (-1, -1)
 
-
     @staticmethod
     def get_row(sudoku, coord_r):
         return sudoku[coord_r]
@@ -123,42 +122,65 @@ class Sudoku:
         ]
 
 
-    # def board_validation(sudoku_list):
-    #     """Prepare Sudoku board. Returns False if invalid."""
-    #     if len(sudoku_list) != 81:
-    #         print(json.dumps({'code': 1, 'result': 'Invalid board'}))
-    #         return False
-    #
-    #     try:
-    #         sudoku_board = [
-    #             [int(digit_txt) for digit_txt in sudoku_list[i:i+9]]
-    #             for i in range(0, 81, 9)
-    #         ]
-    #     except ValueError:
-    #         print(json.dumps({'code': 1, 'result': 'Invalid digits'}))
-    #         return False
-    #
-    #     for row in sudoku_board:
-    #         row_ = [d for d in row if v != 0]
-    #         if len(set(row_)) != len(row_):
-    #             return False
-    #
-    #     for col in list(zip(*sudoku_board)):
-    #         col_ = [d for d in col if v != 0]
-    #         if len(set(col_)) != len(col_):
-    #             return False
-    #
-    #     blocks = [
-    #          [n for row in sudoku_board[i-3:i] for n in row[j-3:j]]
-    #          for i in range(3, 10, 3)
-    #          for j in range(3, 10, 3)
-    #     ]
-    #     for block in blocks:
-    #         block_ = [v for v in block if v != 0]
-    #         if len(set(block_)) != len(block_):
-    #             return False
-    #
-    #     return sudoku_board
+
+class SudokuBoardError(Exception):
+    pass
+
+
+
+class SudokuValidator:
+    """Validates and preprocesses given Sudoku board."""
+    def __init__(self, sudoku_text):
+        self.sudoku_list = sudoku_text.split(',')
+
+
+    @property
+    def board_validation(self):
+        """Prepare Sudoku board. Returns False if invalid."""
+        if len(self.sudoku_list) != 81:
+            raise SudokuBoardError('Invalid board')
+
+        try:
+            sudoku_board = [
+                [int(digit_txt) for digit_txt in self.sudoku_list[i:i+9]]
+                for i in range(0, 81, 9)
+            ]
+        except ValueError:
+            raise SudokuBoardError('Invalid digits')
+
+        for row in sudoku_board:
+            row_ = [d for d in row if d != 0]
+            if len(set(row_)) != len(row_):
+                raise SudokuBoardError('Duplicates in Row')
+
+        for col in zip(*sudoku_board):
+            col_ = [d for d in col if d != 0]
+            if len(set(col_)) != len(col_):
+                raise SudokuBoardError('Duplicates in Column')
+
+        blocks = [
+             [n for row in sudoku_board[i-3:i] for n in row[j-3:j]]
+             for i in range(3, 10, 3)
+             for j in range(3, 10, 3)
+        ]
+        for block in blocks:
+            block_ = [d for d in block if d != 0]
+            if len(set(block_)) != len(block_):
+                raise SudokuBoardError('Duplicates in Block')
+
+        return sudoku_board
+
+
+    def __enter__(self):
+        return self
+
+
+    def __exit__(self, exctype, excval, exctb):
+        if exctype == SudokuBoardError:
+            print(json.dumps({'code': 1, 'result': excval.args[0]}))
+            return True
+        else:
+            return False
 
 
 
@@ -168,29 +190,18 @@ if __name__ == '__main__':
     coord_r, coord_c = int(sys.argv[2]), int(sys.argv[3])
     speed = float(sys.argv[4])
 
-    sudoku_list = sudoku_text.split(',')
+    with SudokuValidator(sudoku_text) as sv:
+        valid_board = sv.board_validation
+        sudoku = Sudoku(valid_board, coord_r, coord_c, speed)
 
-    if len(sudoku_list) != 81: #or has_duplicates(sudoku_list):
-        print(json.dumps({'code': 1, 'result': 'Invalid board'}))
-    else:
-        try:
-            sudoku_board = [
-                [int(digit_txt) for digit_txt in sudoku_list[i:i+9]]
-                for i in range(0, 81, 9)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = [
+                executor.submit(sudoku.init_threads, sudoku.coord_r, sudoku.coord_c, i)
+                for i in range(1, 10)
             ]
-        except ValueError:
-            print(json.dumps({'code': 1, 'result': 'Invalid digits'}))
-        else:
-            sudoku = Sudoku(sudoku_board, coord_r, coord_c, speed)
-
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                results = [
-                    executor.submit(sudoku.init_threads, sudoku.coord_r, sudoku.coord_c, i)
-                    for i in range(1, 10)
-                ]
-                solutions = [
-                    solution.result()
-                    for solution in concurrent.futures.as_completed(results)
-                    if solution.result()
-                ]
-                print(json.dumps({'solution': solutions}))
+            solutions = [
+                solution.result()
+                for solution in concurrent.futures.as_completed(results)
+                if solution.result()
+            ]
+            print(json.dumps({'solution': solutions}))

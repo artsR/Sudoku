@@ -151,9 +151,7 @@ function solveBacktracking() {
     }
     let pyshell = new PythonShell('solver_backtracking.py', options)
 
-    // pyshell.send({args: [sudoku_board]})
     pyshell.on('message', (cell) => {
-
         if (cell.data) {
             let value = cell.data
             let i = cell.id
@@ -174,6 +172,9 @@ function solveBacktracking() {
                     sudoku.choose_solution(cell.solution, displaySolution)
                 }, 3000)
             }
+        }
+        else if(cell.result) {
+            sudoku.show_message(cell.result, 'alert-danger')
         }
         else {
             console.log(cell)
