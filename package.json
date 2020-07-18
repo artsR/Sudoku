@@ -1,0 +1,17 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "Visualization of solving Sudoku puzzle",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "CodArt",
+  "license": "MIT",
+  "dependencies": {
+    "python-shell": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron": "^9.0.4"
+  }
+}

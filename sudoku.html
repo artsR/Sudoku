@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./styles.css"/>
+    <link rel="stylesheet" href="./press-css_io.css"/>
+  </head>
+  <body>
+    <header>
+      <div class="window-action" id="close">&#x2716;</div>
+      <span class="window-header">Sudoku</span>
+    </header>
+    <div class="container">
+      <div class="main-panel">
+        <div class="sudoku-container"></div>
+        <div class="info-panel"></div>
+        <div class="nav-panel">
+          <div class="nav-items">
+            <input class="press press-sm press-ghost press-red" type="button"
+              id="pause" value="Pause"/>
+            <input class="press press-sm press-ghost press-green" type="button"
+              id="continue" value="Continue"/>
+            <input class="press press-sm press-ghost press-red" type="button"
+              id="stop" value="Stop"/>
+            <div class="row-left-btns">
+              <button class="press press-amber press-circle press-ghost"
+                id="clear-all-fields" title="Clear Sudoku board">&oslash;</button>
+              <button class="press press-grey press-circle press-ghost"
+                id="load-own-sudoku" title="Load Sudoku">+</button>
+            </div>
+          </div>
+          <div class="nav-items">
+            <button class="press press-green press-round press-sm" id="solve-easy-fields"
+              title="Solve obvious fields">Solve: obvious cells</button>
+            <button class="press press-blue press-round press-sm" id="solve-backtracking"
+              title="Solve obvious fields">Solve: backtracking</button>
+          </div>
+          <div class="nav-items" id="backtrack-options">
+            <h4>Starting cell:</h4>
+            <input type="radio" name="starting_cell" id="first" value="1" checked/>
+            <label for="first">first</label>
+            <input type="radio" name="starting_cell" id="random" value="2"/>
+            <label for="random">random</label>
+            <input type="radio" name="starting_cell" id="custom" value="3"/>
+            <label for="custom">custom</label>
+            <h4>Interval [s]</h4>
+            <input type="range" name="speed" step="0.01" min="0.01" max="0.5" value="0.01"
+              id="speedInputId" oninput="speedOutputId.value = speedInputId.value"/>
+            <output name="speed" id="speedOutputId">0.01</output>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./ui.js"></script>
+    <script src="./sudoku.js"></script>
+  </body>
+</html>

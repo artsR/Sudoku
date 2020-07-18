@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+    background: #ccc;
+}
+/* title bar */
+header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    -webkit-app-region: drag;
+    background: #333;
+    color: #fff;
+}
+.window-action {
+    padding: 5px 15px;
+    -webkit-app-region: no-drag;
+    font-size: 20px;
+    cursor: pointer;
+}
+.window-action:hover {
+    background: red;
+}
+.window-header {
+    padding: 5px 15px;
+    display: inline-flex;
+    align-items: center;
+}
+/* End title bar */
+/* main */
+div.container {
+    padding: 10px 0px;
+}
+div.main-panel {
+    margin: 65px 0 auto 0;
+    display: grid;
+    grid-template-areas:
+        "sudoku info"
+        "sudoku nav"
+        "sudoku nav"
+        "sudoku nav"
+        "sudoku nav"
+        "sudoku nav";
+    grid-gap: 10px;
+    justify-content: space-between;
+}
+/** sudoku board  */
+.sudoku-container {
+    margin: 0 auto 0 100px;
+    padding: 10px;
+    grid-area: sudoku;
+    display: grid;
+    grid-template-columns: repeat(3, 124px);
+    grid-template-rows: repeat(3, 124px);
+    grid-gap: 5px;
+    width: 412px;
+    justify-content: center;
+    border: 5px solid #666;
+    border-radius: 10px;
+    background: #ddd;
+}
+.digit-container {
+    display: flex;
+}
+.digit-input {
+    margin: 2px;
+    display: 'inline';
+    width: 20px;
+    border: 1px solid #777;
+    border-radius: 10px;
+    color: #777;
+    font-size: .8em;
+    text-align: center;
+    cursor: pointer;
+}
+.sudoku-block {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    grid-template-rows: repeat(3, 40px);
+    grid-gap: 0px;
+    background: #444;
+    border: 2px solid #333;
+    border-radius: 5px;
+}
+.cell {
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px dotted #666;
+}
+.active-cell {
+    border: 1px solid #fff;
+}
+.success {
+    color: #3e3;
+    font-weight: bold;
+}
+.active {
+    background: #999;
+    transition: background .2 ease-in-out;
+}
+.cell-back-options {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 12px);
+    grid-template-rows: repeat(3, 12px);
+    grid-gap: 0px;
+    color: red;
+    font-size: .6em;
+    line-height: 13px;
+}
+/** End sudoku board  */
+/** info  */
+.info-panel {
+    margin-right: 30px;
+    grid-area: info;
+    display: flex;
+    justify-content: center;
+    min-height: 50px;
+    align-items: center;
+    border: 3px solid #eee;
+    border-radius: 10px;
+    background: #ddd;
+}
+.info-panel #solutions {
+    display: grid;
+    grid-template-columns: repeat(9, 25px);
+    grid-template-rows: repeat(9, 25px);
+    grid-gap: 1px;
+}
+.alert-success {
+    border-color: #3e3;
+    color: #393;
+}
+.alert-danger {
+    border-color: #e33;
+    color: #933;
+}
+/** End info  */
+/** nav */
+.nav-panel {
+    margin-right: 30px;
+    padding: 10px;
+    grid-area: nav;
+    width: 300px;
+    position: relative;
+    border: 1px solid #666;
+    border-radius: 10px;
+    background: #ddd;
+}
+.nav-panel .nav-items {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+.nav-panel .nav-items button {
+    color: #444;
+}
+.nav-panel .nav-items > button {
+    margin-bottom: 5px;
+    width: 136px;
+}
+.nav-panel .nav-items .row-left-btns {
+    display: flex;
+    justify-content: flex-end;
+}
+.row-left-btns button {
+    margin-left: 5px;
+}
+.nav-panel .nav-items#backtrack-options {
+    padding: 15px;
+    grid-row: 5/7;
+    width: 265px;
+    position: absolute;
+    bottom: 5px;
+    border: 1px solid #2196f3;
+    border-radius: 15px;
+    font-style: italic;
+    font-size: .8em;
+}
+.nav-options h4 {
+    margin: 10px 0px;
+}
+#pause,
+#continue,
+#stop {
+    display: none;
+}
+/** End nav */
+button:focus {
+    outline: none;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="./press-css_io.css"/>
+    <style>
+    body {
+      background: #ddd;
+    }
+    textarea {
+      margin: auto;
+    }
+    .btns {
+      display: flex;
+      justify-content: space-between;
+    }
+    </style>
+  </head>
+  <body>
+    <textarea id="board" rows="15" cols="20" placeholder="Everything that is not digit will be skipped. Sudoku is read row by row, 0 is considered as empty cell. Any format that meets above criterias is allowed..."></textarea>
+      <div class="btns">
+        <button class="press press-round press-sm press-grey" id="back">Back</button>
+        <button class="press press-round press-ghost press-sm press-green" id="load">Load</button>
+      </div>
+      <script type="text/javascript">
+      const {remote, ipcRenderer} = require('electron')
+
+
+      document.querySelector('#back').addEventListener('click', back)
+      document.querySelector('#load').addEventListener('click', load)
+
+
+      function back() {
+        let win = remote.getCurrentWindow()
+        win.close()
+      }
+
+      function load() {
+        let sudoku_board = Array.from(document.querySelector('textarea').value)
+        sudoku_board = sudoku_board.filter(item => !isNaN(parseInt(item)))
+        if (sudoku_board.length !== 81) {
+          ipcRenderer.send('sudoku:invalid-input')
+        }
+        else {
+          ipcRenderer.send('sudoku:valid-input', sudoku_board)
+        }
+        let win = remote.getCurrentWindow()
+        win.close()
+      }
+      </script>
+  </body>
+</html>

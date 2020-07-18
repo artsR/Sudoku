@@ -1,0 +1,10 @@
+# Electron
+node_modules/
+
+# Python
+*.env
+*.csv
+*.pickle
+
+# Byte-compiled
+__pycache__/
