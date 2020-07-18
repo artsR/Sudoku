@@ -44,7 +44,7 @@ class Sudoku:
                 # print(json.dumps({'result': solved_fields, 'color': color}))
                 # sys.stdout.flush()
                 # self.solved = True
-                return solved_fields
+                return solved_fields, color
             else:
                 print(json.dumps({'data': (coord_r, coord_c, 0), 'id': i, 'color': color}))
                 sys.stdout.flush()

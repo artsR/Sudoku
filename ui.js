@@ -83,7 +83,7 @@ class SudokuUI {
         setTimeout(() => {
             this.infoDiv.innerText = ''
             this.infoDiv.classList.remove(type)
-        }, 3000)
+        }, 2000)
     }
 
     clear() {
@@ -141,5 +141,31 @@ class SudokuUI {
             this.infoDiv.style.pointerEvents = 'none'
         }
         this.sudoku_container.style.transform = 'none'
+    }
+
+    choose_solution(solutions, fn_displaySolution) {
+        /** Chooses solution of `Backtracking` method if there is more than one. */
+        const solution_container = document.createElement('div')
+        solution_container.id = 'solutions'
+
+        solutions.forEach((solution, i) => {
+            let data = solution[0]
+            let color = solution[1]
+
+            let solutionDiv = document.createElement('div')
+            solutionDiv.dataset.solutionId = i
+            solutionDiv.style.background = color
+            solutionDiv.style.cursor = 'pointer'
+
+            solution_container.appendChild(solutionDiv)
+        })
+        solution_container.addEventListener('click', (e) => {
+            let solution_id = e.target.dataset.solutionId
+            if (solution_id) {
+                fn_displaySolution(solutions[solution_id])
+                this.infoDiv.innerHTML = ''
+            }
+        })
+        this.infoDiv.appendChild(solution_container)
     }
 }

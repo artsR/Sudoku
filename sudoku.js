@@ -169,24 +169,10 @@ function solveBacktracking() {
                 sudoku.show_message('Not able to solve', 'alert-danger')
             }
             else {
-                let solution = cell.solution[0]
-                // let color = cell.color
-
-                if (solution.constructor !== Array) {
-                    solution = Array(solution)
-                }
-                solution.forEach(value => {
-                    let current_cell = document.querySelector(`div[data-coord-r="${value[0]}"][data-coord-c="${value[1]}"]`)
-                    setTimeout(() => {
-                        current_cell.classList.add('active')
-                        current_cell.classList.add('success')
-                    }, 1000)
-                    setTimeout(() => {
-                        current_cell.innerText = value[2]
-                        current_cell.classList.remove('active')
-                    }, 2000)
-                })
                 sudoku.show_message(`Sudoku has at least ${cell.solution.length} solution(s)`, 'alert-success')
+                setTimeout(() => {
+                    sudoku.choose_solution(cell.solution, displaySolution)
+                }, 3000)
             }
         }
         else {
@@ -251,5 +237,24 @@ function solveBacktracking() {
             coord_c = -1
             return [coord_r, coord_c]
         }
+    }
+    function displaySolution(data) {
+        let solution = data[0]
+        let color = data[1]
+
+        if (solution.constructor !== Array) {
+            solution = Array(solution)
+        }
+        solution.forEach(value => {
+            let current_cell = document.querySelector(`div[data-coord-r="${value[0]}"][data-coord-c="${value[1]}"]`)
+            setTimeout(() => {
+                current_cell.classList.add('active')
+                current_cell.classList.add('success')
+            }, 1000)
+            setTimeout(() => {
+                current_cell.innerText = value[2]
+                current_cell.classList.remove('active')
+            }, 2000)
+        })
     }
 }

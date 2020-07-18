@@ -130,7 +130,7 @@ div.main-panel {
 .info-panel #solutions {
     display: grid;
     grid-template-columns: repeat(9, 25px);
-    grid-template-rows: repeat(9, 25px);
+    grid-template-rows: 25px;
     grid-gap: 1px;
 }
 .alert-success {
