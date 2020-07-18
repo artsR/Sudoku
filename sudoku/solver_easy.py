@@ -1,5 +1,8 @@
 import sys
 import json
+from solver_backtracking import SudokuBoardError, SudokuValidator, Sudoku
+
+get_row, get_column, get_block = Sudoku.get_row, Sudoku.get_column, Sudoku.get_block
 
 
 
@@ -71,44 +74,18 @@ def no_conflicts(sudoku, coord_r, coord_c, current_value):
     return True
 
 
-def get_row(sudoku, coord_r):
-    return sudoku[coord_r]
-
-
-def get_column(sudoku, coord_c):
-    return list(zip(*sudoku))[coord_c]
-
-
-def get_block(sudoku, coord_r, coord_c):
-    block_row = coord_r - coord_r%3
-    block_col = coord_c - coord_c%3
-    return [
-        field
-        for row in sudoku[block_row : block_row+3]
-        for field in row[block_col : block_col+3]
-    ]
-
-
 
 if __name__ == '__main__':
-    sudoku_text = sys.argv[1]
-    sudoku_list = sudoku_text.split(',')
 
-    if len(sudoku_list) != 81: #or has_duplicates(sudoku_list):
-        print(json.dumps({'code': 1, 'result': 'Invalid board'}))
-    else:
-        try:
-            sudoku_board = [
-                [int(digit_txt) for digit_txt in sudoku_list[i:i+9]]
-                for i in range(0, 81, 9)
-            ]
-        except ValueError:
-            print(json.dumps({'code': 1, 'result': 'Invalid digits'}))
+    sudoku_text = sys.argv[1]
+
+    with SudokuValidator(sudoku_text) as sv:
+        valid_board = sv.board_validation
+
+        empty_fields = get_empty(valid_board)
+        fields_inputs = available_inputs(valid_board, empty_fields)
+        solved_cells = solve_obv_fields(valid_board, empty_fields, fields_inputs)
+        if solved_cells:
+            print(json.dumps({'code': 0, 'result': solved_cells}))
         else:
-            empty_fields = get_empty(sudoku_board)
-            fields_inputs = available_inputs(sudoku_board, empty_fields)
-            solved_cells = solve_obv_fields(sudoku_board, empty_fields, fields_inputs)
-            if solved_cells:
-                print(json.dumps({'code': 0, 'result': solved_cells}))
-            else:
-                print(json.dumps({'code': 1, 'result': 'Not able to solve more'}))
+            print(json.dumps({'code': 1, 'result': 'Not able to solve more...'}))
