@@ -3,6 +3,7 @@ import json
 from solver_backtracking import SudokuBoardError, SudokuValidator, Sudoku
 
 get_row, get_column, get_block = Sudoku.get_row, Sudoku.get_column, Sudoku.get_block
+no_conflicts = Sudoku.no_conflicts
 
 
 
@@ -56,22 +57,6 @@ def available_inputs(sudoku, empty_fields):
             })
         for coord_r, coord_c in empty_fields
     ]
-
-
-def no_conflicts(sudoku, coord_r, coord_c, current_value):
-    """Procedure checks that the most recently introduced number is
-    unique one in its row, column and block.
-    """
-    if current_value in get_row(sudoku, coord_r):
-        return False
-
-    if current_value in get_column(sudoku, coord_c):
-        return False
-
-    if current_value in get_block(sudoku, coord_r, coord_c):
-        return False
-
-    return True
 
 
 

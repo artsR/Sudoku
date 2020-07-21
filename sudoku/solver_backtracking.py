@@ -78,17 +78,18 @@ class Sudoku:
         return False
 
 
-    def no_conflicts(self, sudoku, coord_r, coord_c, current_value):
+    @staticmethod
+    def no_conflicts(sudoku, coord_r, coord_c, current_value):
         """Procedure checks that the most recently introduced number is
         unique one in its row, column and block.
         """
-        if current_value in self.get_row(sudoku, coord_r):
+        if current_value in Sudoku.get_row(sudoku, coord_r):
             return False
 
-        if current_value in self.get_column(sudoku, coord_c):
+        if current_value in Sudoku.get_column(sudoku, coord_c):
             return False
 
-        if current_value in self.get_block(sudoku, coord_r, coord_c):
+        if current_value in Sudoku.get_block(sudoku, coord_r, coord_c):
             return False
 
         return True
