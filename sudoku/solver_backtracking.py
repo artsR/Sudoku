@@ -5,11 +5,6 @@ import concurrent.futures
 
 
 
-# Get starting point:
-"""Sent from user."""
-"""Some other criteria."""
-
-
 class Sudoku:
     colors = [
         '#75594d', '#ff9800', '#ffeb3b', '#8bc34a', '#009688', '#03a9f4',
