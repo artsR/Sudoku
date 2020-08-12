@@ -39,9 +39,10 @@ You can choose some initial options:
 
 
 
+![Backtracking](./docs/backtracking.gif)  
 (interval: 0.25)
-![Backtracking](./docs/backtracking.gif)
 
 
-At the end you can choose one of the found solutions that fills grid:
+At the end you can choose one of the found solutions that fills grid:  
+
 ![Solutions](./docs/solutions.png)
