@@ -6,6 +6,16 @@ Technology used:
 * Python - backend
 * Electron (HTML, CSS, JS) - frontend
 
+## Usage
+```
+git clone https://github.com/artsR/Sudoku.git
+cd Sudoku
+npm install
+cd sudoku
+pipenv shell
+pipenv install
+npm start
+```
 
 ## App Overview
 
